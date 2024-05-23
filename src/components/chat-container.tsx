@@ -10,6 +10,8 @@ interface Message {
   message: string;
 }
 
+const websocketUrl = "ws://34.64.139.68:8000/chat/connect";
+
 const ChatContainer: React.FC<{ username: string }> = ({
   username: username,
 }) => {
@@ -35,7 +37,7 @@ const ChatContainer: React.FC<{ username: string }> = ({
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/chat/connect");
+    const socket = new WebSocket(websocketUrl);
 
     socket.onopen = () => {
       console.log("opened");
@@ -46,9 +48,7 @@ const ChatContainer: React.FC<{ username: string }> = ({
     };
 
     socket.onmessage = (event) => {
-      console.log("got message", event.data);
       setMessages((prev) => [...prev, JSON.parse(event.data)]);
-      console.log(messages);
     };
 
     ws.current = socket;
